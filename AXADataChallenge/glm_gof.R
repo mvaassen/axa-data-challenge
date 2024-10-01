@@ -11,7 +11,7 @@ setwd(dirname(current_path))
 
 data <- read.csv("out.csv")
 
-data_small <- sample_n(data, 10000, replace = FALSE)
+data_small <- sample_n(data, 1000, replace = FALSE)
 data_small <- data_small[data_small$ClaimNb<5, ]
 
 print(head(data_small))
