@@ -9,21 +9,21 @@ library(rstudioapi)
 current_path = rstudioapi::getActiveDocumentContext()$path 
 setwd(dirname(current_path))
 
-data <- read.csv("out.csv")
+data <- read.csv("data_claimnb.csv")
 
-data_small <- sample_n(data, 1000, replace = FALSE)
-data_small <- data_small[data_small$ClaimNb<5, ]
+data_small <- sample_n(data, 50000, replace = FALSE)
+#data_small <- data_small[data_small$ClaimNb<5, ]
 
 print(head(data_small))
 
-poisson.model <- glm(ClaimNb ~ BonusMalus + VehPower + offset(log(Exposure)), data_small, family = poisson(link = "log"))
+poisson.model <- glm(ClaimNb ~ BonusMalus + VehPower + DrivAge + Density + C(Area) + offset(log(Exposure)), data_small, family = poisson(link = "log"))
 summary(poisson.model)
 
 
 mt <- bootGOF::GOF_model(
   model = poisson.model,
   data = data_small,
-  nmb_boot_samples = 200,
+  nmb_boot_samples = 100,
   simulator_type = "parametric",
   y_name = "ClaimNb",
   Rn1_statistic = Rn1_CvM$new())
