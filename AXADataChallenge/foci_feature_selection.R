@@ -18,8 +18,8 @@ current_path = rstudioapi::getActiveDocumentContext()$path
 setwd(dirname(current_path))
 
 # Import data.frame (Python output)
-# data <- read.csv("data_claimnb.csv")
-data <- read.csv("data_avgclaimsev.csv")
+data <- read.csv("data_claimnb.csv")
+# data <- read.csv("data_avgclaimsev.csv")
 
 # features <- data[ , !(names(data_small) %in% c("ClaimNb"))]
 
@@ -28,6 +28,7 @@ foci_res <- c()
 for (i in 1:n_foci) {
   print(paste("Run: ", i))
   data_subsample <- sample_n(data, n_subsamp, replace = FALSE)
+  # Pick respose and features
   foci_res <- c(foci_res, foci(data_subsample$ClaimNb, select(data_subsample, BonusMalus, VehPower, DrivAge, VehAge, Density), numCores = 1, num_features=2))
 }
 
@@ -49,7 +50,7 @@ string_counts <- table(top_feature_list)
 
 # Create a bar plot to help identify top features
 barplot(string_counts,  
-        main = paste("Top features for AvgClaimAmouny, FOCI runs:", n_foci),  
+        main = paste("Top features for ClaimNb, FOCI runs:", n_foci),  
         ylab = "Top feature frequency",  
         col = "lightblue",  
         las = 2)  # las=2 makes the axis labels perpendicular to the axis 
